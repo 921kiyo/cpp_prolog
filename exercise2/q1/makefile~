@@ -1,0 +1,3 @@
+convert_temperature: convert_temperature.cpp
+	g++ -Wall -g convert_temperature -o convert_temperature
+

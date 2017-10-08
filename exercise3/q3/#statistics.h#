@@ -1,0 +1,15 @@
+#ifndef STATISTICS_H
+#define STATISTICS_H
+
+double average(int first);
+double average(int first, int second);
+void a
+verage(int first, int second, int third);
+void average(int first, int second, int third, int fourth);
+
+void standard_deviation(int first);
+void standard_deviation(int first, int second, double avg_result);
+void standard_deviation(int first, int second, int third, double avg_result);
+void standard_deviation(int first, int second, int third, int fourth, double avg_result);
+
+#endif
