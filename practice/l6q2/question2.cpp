@@ -2,6 +2,7 @@
 
 using namespace std;
 
+<<<<<<< HEAD
 
 int minimum_form(char array[], int position){
   int min_index = position;
@@ -38,5 +39,20 @@ int main(){
   string_sort(array);
 
   cout << "The sorted array is " << array << "\n";
+=======
+const int MAX = 80;
+
+void string_sort(char array[]){
+  
+}
+
+int main(){
+  char array[MAX];
+  cout << "Type in a string: \n";
+  cin.getline(array, MAX);
+  string_sort(array);
+  cout << "The sorted string is " << array << "\n"
+  
+>>>>>>> 3fcd6881c963bdfe0ef7a46f469ea077ba19c842
   return 0;
 }
