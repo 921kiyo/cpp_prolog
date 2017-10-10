@@ -3,9 +3,13 @@
 using namespace std;
 
 
-bool is_prefix(string first_string, string second_string){
+const int MAX = 80;
+
+bool is_prefix(char first_string, char second_string){
+  
 }
 
-int substring_position(string first, string second){
-  
+int substring_position(char first[], char second[]){
+  int count = 0; 
+  while(first[count] != '\0' || second[count] != '\0')
 }
