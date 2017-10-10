@@ -3,11 +3,14 @@
 
 using namespace std;
 
+const int False = 0;
+const int True = 1;
+
 int main(){
-  bool is_comment = false;
+  bool is_comment = False;
   char character, next_character;
-  / COMMENT HERE 
-  cout << "Testing: " << 16/2 << " = " << 4 << ".\n\n";
+  
+  cout << "Testing: " << 16/2 << " = " << 4*2 << ".\n\n";
 
   ifstream in_stream;
   ofstream out_stream;
@@ -16,28 +19,31 @@ int main(){
 
   in_stream.get(character);
   while(!in_stream.eof()){
-    cout << character;
 
-    if(is_comment == false && character == '/'){
+    
+    if(is_comment == False && character == '/'){
       in_stream.get(next_character);
-      if(next_character == '){
-	is_comment = true;
+      if(next_character == '*'){
+	is_comment = True;
       }
       else{
 	in_stream.putback(next_character);
       }
+
     }
 
-    if(is_comment = true && character == '){
-      in_stream.get(next_character);
-      if(next_character == '/'){
-	is_comment = false;
+    if(is_comment == True && character == '*'){
+      in_stream.get(character);
+      if(character == '/'){
+	is_comment = False;
 	in_stream.get(character);
+
       }
     }
 
-    if(is_comment == false){
+    if(is_comment == False){
       out_stream.put(character);
+      cout << character;
     }
     
     in_stream.get(character);
