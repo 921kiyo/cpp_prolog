@@ -35,7 +35,6 @@ int main() {
   cout << "equal" << endl;
 
   // question 3
-  /*
   cout << "====================== Question 3 ======================" << endl;
 
   cout << "There are ";
@@ -49,7 +48,6 @@ int main() {
   cout << " surnames in the sentence 'Jakes, Jaxin, J acksin, Jones.'" 
        << endl;
   cout << "  that have the same Soundex encoding as 'Jackson'" << endl << endl;
-  */
   return 0;
 }
 
