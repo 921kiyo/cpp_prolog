@@ -72,16 +72,29 @@ int palindrome(const char* sentence){
 
 void clean_string(char* string)
 {
-  for(int i = 0; i < strlen(strlen(string)); i++){
+  for(int i = 0; i < strlen(string); i++){
     int chr = static_cast<int>(string[i]);
+    // Converting lowercase to uppercase
     if(chr >= 65 && chr <= 90){
       chr += 32;
       string[i] =  static_cast<char>(chr);
     }
-    else if(!( chr >= 97 && chr =< 122)){
+    // Remove anything other than alphabet
+    else if(!( chr >= 97 && chr <= 122)){
       string[i] = ' ';
     }
   }
+}
+
+int minimum(char* string, int start){
+  int position = start;
+  for(int i = start + 1; i < strlen(string); i++){
+    if(string[i] > string[position]){
+      position = i;
+    }
+  }
+  swap(string[start], string[position]);
+    return position;
 }
 
 int anagram(const char* str1, const char* str2){
@@ -92,4 +105,18 @@ int anagram(const char* str1, const char* str2){
   
   clean_string(string1);
   clean_string(string2);
+
+  for(int i=0; i<strlen(str1); i++){
+    minimum(string1, i);
+  }
+
+  for(int i=0; i<strlen(str2); i++){
+    minimum(string2, i);
+  }
+
+  if(compare(string1, string2)){
+    return 1;
+  }
+
+  return 0;
 }
