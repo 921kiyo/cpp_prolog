@@ -70,7 +70,19 @@ int palindrome(const char* sentence){
   return compare(sentence, reversed); 
 }
 
-
+void clean_string(char* string)
+{
+  for(int i = 0; i < strlen(strlen(string)); i++){
+    int chr = static_cast<int>(string[i]);
+    if(chr >= 65 && chr <= 90){
+      chr += 32;
+      string[i] =  static_cast<char>(chr);
+    }
+    else if(!( chr >= 97 && chr =< 122)){
+      string[i] = ' ';
+    }
+  }
+}
 
 int anagram(const char* str1, const char* str2){
   char string1[strlen(str1)];
