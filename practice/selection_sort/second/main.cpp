@@ -15,26 +15,30 @@ void swap(char &letter1, char &letter2){
 int minimum_index(char str[], int position){
   int start = position + 1;
   int min_index = position;
-  for(int i = start; i< strlen(str); i++){
-    if(str[i] < str[min_index]){
-      min_index = i;
+  while(str[start] != '\0'){
+    if(str[start] < str[min_index]){
+      min_index = start;
     }
+    start++;
   }
   return min_index;
 }
 
 void string_sort(char str[]){
-  for(int i = 0; i < strlen(str); i++){
+  int i = 0;
+  while(str[i] != '\0'){
     swap(str[i], str[minimum_index(str, i)]);
+    i++;
   }
 }
 
 int main(){
   char str[MAX];
   cout << "Type in a string: " << endl;
-  cin >> str;
+  cin.getline(str, MAX);
+  cout << str;
   cout << "\n";
-  void string_sort(char str[]);
-  cout << "The sorted string is: " << str << "/n";
+  string_sort(str);
+  cout << "The sorted string is: " << str << "\n";
   return 0;
 }
