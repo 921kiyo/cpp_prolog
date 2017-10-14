@@ -25,7 +25,7 @@ void shift_back(char sentence[], int position){
 }
 
 // change to * later
-void no_repetition(char sentence[]){
+void no_repetition(char* sentence){
   int start = strlen(sentence);
   for(int i = start; i>0; i--){
     if(is_appeared(i, sentence[i], sentence)){
