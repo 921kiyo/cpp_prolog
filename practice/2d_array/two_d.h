@@ -1,0 +1,16 @@
+#ifndef TWO_D_H
+#define TWO_D_H
+
+const int M = 2;
+const int N = 2;
+const int R = 2;
+
+insert_n(char array[][N],int row);
+
+insert_r(char array[][R],int row);
+
+display_n(char array[][N],int row);
+
+display_r(char array[][R],int row);
+
+#endif

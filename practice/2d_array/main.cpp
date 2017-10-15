@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-#include "2d.h"
+#include "two_d.h"
 
 using namespace std;
 
@@ -9,8 +9,15 @@ int main(){
   int array2[N][R];
   
   cout << "INPUT FIRST 2*2 MATRIX: " << endl;
-  insert_value(array1, M, N);
+  insert_n(array1, M);
   cout << "INPUT SECOND 2*2 MATRIX: " << endl;
-  insert_value(array2, N, R);
+  insert_r(array2, N);
+
+  cout << "\n\n";
+  
+  display_n(array1, M);
+  cout << "\n";
+  display_r(array2, N);
+  cout << "\n";
   return 0; 
 }
