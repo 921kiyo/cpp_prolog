@@ -5,12 +5,16 @@ const int M = 2;
 const int N = 2;
 const int R = 2;
 
-insert_n(char array[][N],int row);
+void insert_n(int array[][N],int row);
 
-insert_r(char array[][R],int row);
+void insert_r(int array[][R],int row);
 
-display_n(char array[][N],int row);
+void matrix_multiplication(int array1[][N], int array2[][R], int answer[][R]);
 
-display_r(char array[][R],int row);
+int entry_cell(int a_row, int a_column, int array1[][N], int array2[][R]);
+
+void display_n(int array[][N],int row);
+
+void display_r(int array[][R],int row);
 
 #endif

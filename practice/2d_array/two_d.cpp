@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void insert_n(char array[][N], int row){
+void insert_n(int array[][N], int row){
   for(int i = 0; i< row; i++){
     cout << "Type in " << N << " values for row " << i << " separated by spaces: ";
     for(int x = 0; x< N; x++){
@@ -13,16 +13,33 @@ void insert_n(char array[][N], int row){
   }
 }
 
-void insert_r(char array[][R], int row){
+void insert_r(int array[][R], int row){
   for(int i = 0; i< row; i++){
-    cout << "Type in " << " values for row " << i << " separated by spaces: ";
+    cout << "Type in " << R << " values for row " << i << " separated by spaces: ";
     for(int x = 0; x< R; x++){
       cin >> array[i][x];
     }
   }
 }
 
-void display_n(char array[][N], int row){
+void matrix_multiplication(int array1[][N], int array2[][R], int answer[][R]){
+  for(int row=0; row < M; row++){
+    for(int column=0; column < R; column++){
+      answer[row][column] = entry_cell(row, column, array1, array2); 
+    }
+  }
+}
+
+int entry_cell(int a_row, int a_column, int array1[][N], int array2[][R]){
+  int total = 0;
+  for(int counter = 0; counter < N; counter++){
+    total += array1[a_row][counter] * array2[counter][a_column];
+  }
+
+  return total;
+}
+
+void display_n(int array[][N], int row){
   for(int i = 0; i< row; i++){
     for(int x = 0; x < N; x++){
       cout << array[i][x];
@@ -31,7 +48,7 @@ void display_n(char array[][N], int row){
   }
 }
 
-void display_r(char array[][R], int row){
+void display_r(int array[][R], int row){
   for(int i = 0; i< row; i++){
     for(int x = 0; x < R; x++){
       cout << array[i][x];
