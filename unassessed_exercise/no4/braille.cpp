@@ -5,7 +5,7 @@
 using namespace std;
 
 int encode_character(char ch, char* braille){
-    braille[0] = 0;
+    strcpy(braille, "");
     int braille_size = 6;
     char character = ch;
     if(ispunct(ch)){
@@ -23,14 +23,64 @@ int encode_character(char ch, char* braille){
             strcat(braille,".....0");
             character = tolower(ch);
         }
-        //TODO change this
-        // cout << "character " << character << endl;
-        // cout << "braille before " << braille << endl;
         encode_alphabet(character, braille);
-        // cout << "braille after " << braille << endl;
     }
-    // change it later
     return braille_size;
+}
+
+char* encode(const char* plaintext, char* braille){
+  if(*plaintext == '\0'){
+    return braille;
+  }
+  else{
+    int length = encode_character(*plaintext, braille);
+    return encode((plaintext+1), (braille+length));
+  }
+}
+
+
+void print_braille(const char* plaintext, ostream& output){
+  char braille[512];
+  braille[0] = '\0';
+
+  encode(plaintext, braille);
+  output << plaintext << endl;
+
+  int length = strlen(braille);
+
+  cout << endl;
+
+  for(int i = 0; i< length; i++){
+    if(i%3 == 0){
+      cout << braille[i];
+    }
+  }
+
+  cout << endl;
+  for(int i = 0; i< length; i++){
+    if( i > 0 && (i-1)%3 == 0){
+      cout << braille[i];
+    }
+  }
+
+  cout << endl;
+
+  for(int i = 0; i< length; i++){
+    if(i>0 && (i+1)%3 == 0){
+      cout << braille[i];
+    }
+  }
+  cout << endl;
+
+  //int text_length = strlen(plaintext);
+  for(int i = 0; plaintext[i] != '\0'; i++){
+    if(isupper(plaintext[i]) || isdigit(plaintext[i])){
+      cout << "  ";
+    }
+    cout << plaintext[i] << " ";
+  }
+  cout << endl;
+
 }
 
 void encode_punctuation(char letter, char* braille){
