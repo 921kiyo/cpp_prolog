@@ -5,45 +5,50 @@
 using namespace std;
 
 int encode_character(char ch, char* braille){
+    braille[0] = 0;
     int braille_size = 6;
     char character = ch;
     if(ispunct(ch)){
-        braille = encode_punctuation(ch);
+        encode_punctuation(ch, braille);
     }
     else{
         if(isdigit(ch)){
-            braille_size = 12;
-            braille = '..0000';
+            braille_size += 6;
+            strcat(braille,"..0000");
             character = convert_num_to_alpha(ch);
+
         }
         if(isupper(ch)){
-            braille_size = 12;
-            braille = '.....0';
+            braille_size += 6;
+            strcat(braille,".....0");
             character = tolower(ch);
         }
         //TODO change this
-        braille = encode_alphabet(character);
-    }   
+        // cout << "character " << character << endl;
+        // cout << "braille before " << braille << endl;
+        encode_alphabet(character, braille);
+        // cout << "braille after " << braille << endl;
+    }
     // change it later
-    return 1;
+    return braille_size;
 }
 
-char* encode_punctuation(char letter){
+void encode_punctuation(char letter, char* braille){
     switch(letter){
-        case '.': return ".0..00";
+        case '.': strcat(braille, ".0..00");
         break;
-        case ',': return ".0....";
+        case ',': strcat(braille, ".0....");
         break;
-        case ";": return ".00...";
+        case ';': strcat(braille, ".00...");
         break;
-        case '-': return "..0..0";
+        case '-': strcat(braille, "..0..0");
         break;
-        case '!': return ".00.0.";
+        case '!': strcat(braille, ".00.0.");
         break;
-        case '?': return ".00..0";
+        case '?': strcat(braille, ".00..0");
         break;
         case '(':
-        case ')': return ".0..00";
+        case ')': strcat(braille, ".0..00");
     }
 }
 
@@ -51,79 +56,78 @@ char convert_num_to_alpha(const char num){
     switch(num){
         case '1': return 'a';
         break;
-        case '2': return 'a';
+        case '2': return 'b';
         break;
-        case '3': return 'a';
+        case '3': return 'c';
         break;
-        case '4': return 'a';
+        case '4': return 'd';
         break;
-        case '5': return 'a';
+        case '5': return 'e';
         break;
-        case '6': return 'a';
+        case '6': return 'f';
         break;
-        case '7': return 'a';
+        case '7': return 'g';
         break;
-        case '8': return 'a';
+        case '8': return 'h';
         break;
-        case '9': return 'a';
+        case '9': return 'i';
         break;
+        default: return num;
     }
 }
 
-char* encode_alphabet(const char letter){
+void encode_alphabet(const char letter, char* braille){
     switch(letter){
-        case 'a': return "0.....";
+        case 'a': strcat(braille, "0.....");
         break;
-        case 'b': return "00....";
+        case 'b': strcat(braille, "00....");
         break;
-        case 'c': return "0..0..";
+        case 'c': strcat(braille, "0..0..");
         break;
-        case 'd': return "0..00.";
+        case 'd': strcat(braille, "0..00.");
         break;
-        case 'e': return "0...0.";
+        case 'e': strcat(braille, "0...0.");
         break;
-        case 'f': return "00.0..";
+        case 'f': strcat(braille, "00.0..");
         break;
-        case 'g': return "00.00.";
+        case 'g': strcat(braille, "00.00.");
         break;
-        case 'h': return "00..0.";
+        case 'h': strcat(braille, "00..0.");
         break;
-        case 'i': return ".0.0..";
+        case 'i': strcat(braille, ".0.0..");
         break;
-        case 'j': return ".0.00.";
+        case 'j': strcat(braille, ".0.00.");
         break;
-        case 'k': return "0.0...";
+        case 'k': strcat(braille, "0.0...");
         break;
-        case 'l': return "000...";
+        case 'l': strcat(braille, "000...");
         break;
-        case 'm': return "0.00..";
+        case 'm': strcat(braille, "0.00..");
         break;
-        case 'n': return "0.000.";
+        case 'n': strcat(braille, "0.000.");
         break;
-        case 'o': return "0.0.0.";
+        case 'o': strcat(braille, "0.0.0.");
         break;
-        case 'p': return "0000..";
+        case 'p': strcat(braille, "0000..");
         break;
-        case 'q': return "00000.";
+        case 'q': strcat(braille, "00000.");
         break;
-        case 'r': return "000.0.";
+        case 'r': strcat(braille, "000.0.");
         break;
-        case 's': return ".000..";
+        case 's': strcat(braille, ".000..");
         break;
-        case 't': return ".0000.";
+        case 't': strcat(braille, ".0000.");
         break;
-        case 'u': return "0.0..0";
+        case 'u': strcat(braille, "0.0..0");
         break;
-        case 'v': return "000..0";
+        case 'v': strcat(braille, "000..0");
         break;
-        case 'w': return ".0.000";
+        case 'w': strcat(braille, ".0.000");
         break;
-        case 'x': return "0.00.0";
+        case 'x': strcat(braille, "0.00.0");
         break;
-        case 'y': return "0.0000";
+        case 'y': strcat(braille, "0.0000");
         break;
-        case 'z': return "0.0.00";
+        case 'z': strcat(braille, "0.0.00");
     }
 }
-
-
