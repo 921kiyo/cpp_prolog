@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <ostream>
 #include "piglatin.h"
 
 using namespace std;
@@ -30,47 +31,62 @@ bool check_vowels(char word, int position, int index){
 }
 
 void translateWord(const char* english, char* piglatin){
+  memset(piglatin, 0, strlen(piglatin)); // cleaning piglatin
+  bool is_capital = isupper(english[0]);
 
-  int length = strlen(english);
+
   while(english != '\0'){
-    // Check if the word begins with a vowel
     int vowel_position = findFirstVowel(english);
-    if(vowel_position == 0){
+
+    // if the first letter is a digit
+    if(vowel_position == -1 && isdigit(english[0])){
+      strcpy(piglatin, english);
+      return;
+    }
+    // if the vowel is the first letter
+    else if(vowel_position == 0 && !isdigit(english[0])){
       strcpy(piglatin, english);
       strcat(piglatin, "way");
-      break;
+      return;
     }
     // When a vowel is found anywhere other than the index 0
     else if(vowel_position > 0){
-      move_character_before(english, piglatin, vowel_position);
-      break;
+      move_character_before(english, piglatin, vowel_position, is_capital);
+      return;
     }
     // When no vowel is found
     else{
       strcpy(piglatin, english);
       strcat(piglatin, "ay");
-      break;
+
+      return;
     }
     english++;
   }
 }
 
-void move_character_before(const char* english, char* piglatin, int position){
-  cout << english << endl;
-  cout << piglatin << endl;
-  int length = strlen(english);
+void move_character_before(const char* english, char* piglatin, int position, bool is_capital){
 
   int x = 0;
   for(int i = position; english[i] != '\0'; i++){
-    piglatin[x] = english[i];
+    // if the first letter in english is upper case, make it lowercase
+    if(x == 0 && is_capital){
+      piglatin[x] = toupper(english[i]);
+    }else{
+      piglatin[x] = english[i];
+    }
     x++;
   }
-  
+
   for(int i = 0; i < position; i++){
-    piglatin[x] = english[i];
+    if(i == 0 && is_capital){
+      piglatin[x] = tolower(english[i]);
+    }
+    else{
+      piglatin[x] = english[i];
+    }
+
     x++;
   }
-
   strcat(piglatin, "ay");
-
 }

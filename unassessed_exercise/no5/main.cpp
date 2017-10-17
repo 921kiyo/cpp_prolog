@@ -32,8 +32,12 @@ int main() {
 
   char translated[100];
 
+  translateWord("sss", translated);
+  cout << "In Pig Latin 'sss' is '" << translated << "'." << endl;
   translateWord("grape", translated);
   cout << "In Pig Latin 'grape' is '" << translated << "'." << endl;
+  translateWord("100", translated);
+  cout << "In Pig Latin '100' is '" << translated << "'." << endl;
   translateWord("orange", translated);
   cout << "In Pig Latin 'orange' is '" << translated << "'." << endl;
   translateWord("Banana", translated);
@@ -42,16 +46,16 @@ int main() {
   cout << "In Pig Latin 'Yellow' is '" << translated << "'." << endl;
   cout << endl;
 
-  // /* QUESTION 3 */
-  //
-  // cout << "====================== Question 3 ======================" << endl;
-  //
-  // cout << "The file 'fruit.txt' translated into Pig Latin is:" << endl << endl;
-  // ifstream input;
-  // input.open("fruit.txt");
-  // translateStream(input, cout);
-  // input.close();
-  // cout << endl;
+  /* QUESTION 3 */
+
+  cout << "====================== Question 3 ======================" << endl;
+
+  cout << "The file 'fruit.txt' translated into Pig Latin is:" << endl << endl;
+  ifstream input;
+  input.open("fruit.txt");
+  translateStream(input, cout);
+  input.close();
+  cout << endl;
 
   return 0;
 }
