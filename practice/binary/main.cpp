@@ -2,25 +2,23 @@
 
 using namespace std;
 
-int binary_search(int value, int list[], int first, int last){
-  int middle = (last+first)/2;
+// int binary_search(int value, int list[], int first, int last){
+//   int middle = (last+first)/2;
 
 
-  if(value == list[middle]){
-    return middle;
-  }
-  else if(value < list[middle]){
-    return binary_search(value, list, first, middle-1);
-  }
-  else{
-    return binary_search(value, list, middle+1, last);
-  }
+//   if(value == list[middle]){
+//     return middle;
+//   }
+//   else if(value < list[middle]){
+//     return binary_search(value, list, first, middle-1);
+//   }
+//   else{
+//     return binary_search(value, list, middle+1, last);
+//   }
 
-}
+// }
 
 
-
-/*
 int binary_search(int value, int list[], int first, int last){
   int middle;
   if(first>last){
@@ -39,7 +37,7 @@ int binary_search(int value, int list[], int first, int last){
     }
   }
 }
-*/
+
 
 int main(){
   const int MAX = 11;
