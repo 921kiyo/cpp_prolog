@@ -27,31 +27,42 @@ char binary_to_ascii(char *binary) {
 
 /* now add your own functions here */
 
-void text_to_binary(char* str, char* binary){
-  char res[10];
+void text_to_binary(const char* str, char* binary){
+  char res[100];
   if(*str == '\0'){
+    strcat(binary, "\0");
     return;
   }
   ascii_to_binary(*str, res);
+  cout << *str << endl;
+  cout << res << endl;
   strcat(binary, res);
-  str++;
-  binary++;
-  text_to_binary(str, binary);
+  cout << binary << endl;
+  text_to_binary(str+1, binary);
 }
 
-void binary_to_text(char* binary, char* str){
-  char temp[10];
-  if(*str == '\0'){
+void binary_to_text(const char* binary, char* str){
+  if(*binary == '\0'){
+    *str = '\0';
     return;
   }
-  for(int i = 0; i < 8; i++){
-    temp[i] = binary[i];
-    cout << binary[i] << endl;
-  }
+  char temp[512];
+  strcpy(temp, binary);
   temp[8] = '\0';
-  //
-  // cout << temp << endl;
-  //
-  // strcat(binary_to_ascii())
+
+  *str = binary_to_ascii(temp);
+
+  binary_to_text(binary+8, (str+1));
+
+}
+
+char* add_error_correction(const char* data, char* decoded){
+  while(data* != '\0'){
+    if(){
+      
+    }
+  }
+  get_check_digit
+
 
 }
