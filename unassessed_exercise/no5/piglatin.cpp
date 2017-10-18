@@ -90,3 +90,18 @@ void move_character_before(const char* english, char* piglatin, int position, bo
   }
   strcat(piglatin, "ay");
 }
+
+void translateStream(istream& inputStream, ostream& outputStream){
+  char character;
+  char word[64];
+  char piglatin[64];
+  inputStream.get(character);
+  while(inputStream >> word){
+
+    
+    outputStream.put(character);
+    // translateWord(character, piglatin);
+    inputStream.get(character);
+  }
+  // inputStream >> outputStream;
+}
