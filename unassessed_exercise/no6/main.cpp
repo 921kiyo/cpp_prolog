@@ -27,8 +27,7 @@ int main() {
   cout << "====================== Question 1 ======================" << endl << endl;
 
   char encoded[512], text[32];
-  encoded[0] = 0;
-  text[0] = 0;
+  encoded[0] = '\0';
   text_to_binary("Art",encoded);
   cout << "'Art' encoded as binary is " << encoded << endl << endl;
 

@@ -28,7 +28,10 @@ char binary_to_ascii(char *binary) {
 /* now add your own functions here */
 
 void text_to_binary(const char* str, char* binary){
-  char res[100];
+  char res[10];
+
+  
+  // strcpy()
   if(*str == '\0'){
     strcat(binary, "\0");
     return;
@@ -56,13 +59,11 @@ void binary_to_text(const char* binary, char* str){
 
 }
 
-char* add_error_correction(const char* data, char* decoded){
-  while(data* != '\0'){
-    if(){
-      
-    }
-  }
-  get_check_digit
-
-
-}
+// char* add_error_correction(const char* data, char* decoded){
+//   while(data* != '\0'){
+//     if(){}
+//   }
+//   get_check_digit
+//
+//
+// }
