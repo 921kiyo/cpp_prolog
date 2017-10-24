@@ -8,4 +8,8 @@ void text_to_binary(const char* str, char* binary);
 
 void binary_to_text(const char* binary, char* str);
 
+void add_error_correction(const char* data, char* decoded);
+
+char parity(char first, char second, char third);
+
 #endif

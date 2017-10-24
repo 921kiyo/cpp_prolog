@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+#include "correct.h"
+
 using namespace std;
 
 /* You are supplied with two helper functions */
@@ -30,17 +32,15 @@ char binary_to_ascii(char *binary) {
 void text_to_binary(const char* str, char* binary){
   char res[10];
 
-  
-  // strcpy()
   if(*str == '\0'){
     strcat(binary, "\0");
     return;
   }
   ascii_to_binary(*str, res);
-  cout << *str << endl;
-  cout << res << endl;
+  // cout << *str << endl;
+  // cout << res << endl;
   strcat(binary, res);
-  cout << binary << endl;
+  // cout << binary << endl;
   text_to_binary(str+1, binary);
 }
 
@@ -59,11 +59,38 @@ void binary_to_text(const char* binary, char* str){
 
 }
 
-// char* add_error_correction(const char* data, char* decoded){
-//   while(data* != '\0'){
-//     if(){}
-//   }
-//   get_check_digit
-//
-//
-// }
+void add_error_correction(const char* data, char* decoded){
+  char c1,c2,c3;
+  char d[4];
+
+  int counter = 0;
+  while(data[counter] != '\0'){
+    d[counter] = data[counter];
+    counter++;
+  }
+  d[counter] = '\0';
+
+  c1 = parity(d[0], d[1], d[3]);
+  c2 = parity(d[0], d[2], d[3]);
+  c3 = parity(d[1], d[2], d[3]);
+
+  decoded[0] = c1;
+  decoded[1] = c2;
+  decoded[2] = d[0];
+  decoded[3] = c3;
+  decoded[4] = d[1];
+  decoded[5] = d[2];
+  decoded[6] = d[3];
+  decoded[7] = '\0';
+
+}
+
+char parity(char first, char second, char third){
+  int total = first + second + third;
+  if(total%2 == 0){
+    return '0';
+  }
+  else{
+    return '1';
+  }
+}
