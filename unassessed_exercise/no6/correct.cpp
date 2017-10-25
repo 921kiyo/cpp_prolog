@@ -63,29 +63,28 @@ void binary_to_text(const char* binary, char* str){
 
 void add_error_correction(const char* data, char* decoded){
 
-  char d[4];
+  char d[5];
   char partial_decoded[8];
 
-  // if(decoded == '\0'){
-  //   return;
-  // }
+  if(*data == '\0'){
+    return;
+  }
 
   // Clean decoded
-  // strcpy(decoded, "");
-
+  strcpy(decoded, "");
 
   for(int i = 0; i < 4; i++){
-    d[i] = (static_cast<int>(*(data+i))) - 48;
-    cout << "d[i] " << d[i] << endl;
+    // cout << "hehe " << *(data+i) << endl;
+    d[i] = *(data+i);
     // cout << "SSS " <<   << endl;
   }
-  // d[4] = '\0';
-  //
-  // create_error_corrected_data(d,partial_decoded);
-  // // cout << "partial_decoded " << partial_decoded << endl;
-  //
-  // strcat(decoded, partial_decoded);
-  // add_error_correction(data+4, decoded+7);
+  d[4] = '\0';
+
+  create_error_corrected_data(d,partial_decoded);
+
+  strcat(decoded, partial_decoded);
+
+  add_error_correction(data+4, decoded+7);
 }
 
 char* create_error_corrected_data(char* d,char* decoded){
