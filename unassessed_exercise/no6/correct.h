@@ -10,6 +10,8 @@ void binary_to_text(const char* binary, char* str);
 
 void add_error_correction(const char* data, char* decoded);
 
+char* create_error_corrected_data(char* d,char* decoded);
+
 char parity(char first, char second, char third);
 
 #endif

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+
+
 #include "correct.h"
 
 using namespace std;
@@ -60,19 +62,42 @@ void binary_to_text(const char* binary, char* str){
 }
 
 void add_error_correction(const char* data, char* decoded){
-  char c1,c2,c3;
+
   char d[4];
+  char partial_decoded[8];
 
-  int counter = 0;
-  while(data[counter] != '\0'){
-    d[counter] = data[counter];
-    counter++;
+  // Clean decoded
+  strcpy(decoded, "");
+
+
+  for(int i = 0; data[i] != '/0'; i++){
+
+    int counter = 1;
+    while(counter%4 == 0){
+      d[counter] = data[counter];
+      cout << "dss " << d[counter] << endl;
+      counter++;
+    }
+    d[counter] = '\0';
+
   }
-  d[counter] = '\0';
 
+
+  create_error_corrected_data(d,partial_decoded);
+  cout << "partial_decoded " << partial_decoded << endl;
+
+  strcat(decoded, partial_decoded);
+}
+
+char* create_error_corrected_data(char* d,char* decoded){
+  char c1,c2,c3;
   c1 = parity(d[0], d[1], d[3]);
   c2 = parity(d[0], d[2], d[3]);
   c3 = parity(d[1], d[2], d[3]);
+  cout << "c2 " << c2 << endl;
+  cout << "c3 " << c3 << endl;
+
+  cout << "d " << d << endl;
 
   decoded[0] = c1;
   decoded[1] = c2;
@@ -82,6 +107,8 @@ void add_error_correction(const char* data, char* decoded){
   decoded[5] = d[2];
   decoded[6] = d[3];
   decoded[7] = '\0';
+
+  cout << "decoded " << decoded << endl;
 
 }
 
