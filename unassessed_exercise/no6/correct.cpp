@@ -12,7 +12,7 @@ using namespace std;
 void ascii_to_binary(char ch, char *binary);
 
 /* converts a binary string representation into a character */
-char binary_to_ascii(char *binary);
+char binary_to_ascii(const char *binary);
 
 void ascii_to_binary(char ch, char *binary) {
   for (int n = 128; n; n >>= 1)
@@ -20,7 +20,7 @@ void ascii_to_binary(char ch, char *binary) {
   *binary = '\0';
 }
 
-char binary_to_ascii(char *binary) {
+char binary_to_ascii(const char *binary) {
   int ch = 0;
   for (int n=0, slide=128; n<8; n++, slide >>= 1) {
     if (binary[n] == '1')
@@ -66,27 +66,26 @@ void add_error_correction(const char* data, char* decoded){
   char d[4];
   char partial_decoded[8];
 
+  // if(decoded == '\0'){
+  //   return;
+  // }
+
   // Clean decoded
-  strcpy(decoded, "");
+  // strcpy(decoded, "");
 
 
-  for(int i = 0; data[i] != '/0'; i++){
-
-    int counter = 1;
-    while(counter%4 == 0){
-      d[counter] = data[counter];
-      cout << "dss " << d[counter] << endl;
-      counter++;
-    }
-    d[counter] = '\0';
-
+  for(int i = 0; i < 4; i++){
+    d[i] = (static_cast<int>(*(data+i))) - 48;
+    cout << "d[i] " << d[i] << endl;
+    // cout << "SSS " <<   << endl;
   }
-
-
-  create_error_corrected_data(d,partial_decoded);
-  cout << "partial_decoded " << partial_decoded << endl;
-
-  strcat(decoded, partial_decoded);
+  // d[4] = '\0';
+  //
+  // create_error_corrected_data(d,partial_decoded);
+  // // cout << "partial_decoded " << partial_decoded << endl;
+  //
+  // strcat(decoded, partial_decoded);
+  // add_error_correction(data+4, decoded+7);
 }
 
 char* create_error_corrected_data(char* d,char* decoded){
@@ -94,10 +93,6 @@ char* create_error_corrected_data(char* d,char* decoded){
   c1 = parity(d[0], d[1], d[3]);
   c2 = parity(d[0], d[2], d[3]);
   c3 = parity(d[1], d[2], d[3]);
-  cout << "c2 " << c2 << endl;
-  cout << "c3 " << c3 << endl;
-
-  cout << "d " << d << endl;
 
   decoded[0] = c1;
   decoded[1] = c2;
@@ -109,6 +104,7 @@ char* create_error_corrected_data(char* d,char* decoded){
   decoded[7] = '\0';
 
   cout << "decoded " << decoded << endl;
+  return decoded;
 
 }
 

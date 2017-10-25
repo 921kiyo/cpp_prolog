@@ -1,8 +1,8 @@
 #ifndef CORRECT_H
 #define CORRECT_H
 
-void ascii_to_binary(char letter, char *output);
-char binary_to_ascii(char *binary);
+void ascii_to_binary(const char letter, char *output);
+char binary_to_ascii(const char *binary);
 
 void text_to_binary(const char* str, char* binary);
 
