@@ -13,6 +13,11 @@ int main(){
   cout << "tomorrow is ";
   tomorrow->print();
 
+  Date &rDate = today;
+
+  today.print();
+  rDate.print();
+
   // aDay = today;
 
   // if(aDay.equal(today)){
