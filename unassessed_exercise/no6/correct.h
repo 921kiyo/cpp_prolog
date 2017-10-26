@@ -12,6 +12,8 @@ void add_error_correction(const char* data, char* decoded);
 
 char* create_error_corrected_data(char* d,char* decoded);
 
-char parity(char first, char second, char third);
+char parity(char first, char second, char third, char fourth = '0');
+
+int decode(const char* received, char* decoded);
 
 #endif

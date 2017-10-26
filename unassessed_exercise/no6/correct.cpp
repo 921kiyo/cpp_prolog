@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-
+#include <cmath>
 
 #include "correct.h"
 
@@ -62,6 +62,7 @@ void binary_to_text(const char* binary, char* str){
 }
 
 void add_error_correction(const char* data, char* decoded){
+  *decoded = '\0';
 
   char d[5];
   char partial_decoded[8];
@@ -71,7 +72,7 @@ void add_error_correction(const char* data, char* decoded){
   }
 
   // Clean decoded
-  strcpy(decoded, "");
+  // strcpy(decoded, "");
 
   for(int i = 0; i < 4; i++){
     // cout << "hehe " << *(data+i) << endl;
@@ -81,11 +82,10 @@ void add_error_correction(const char* data, char* decoded){
   d[4] = '\0';
 
   create_error_corrected_data(d,partial_decoded);
-
   strcat(decoded, partial_decoded);
-
   add_error_correction(data+4, decoded+7);
 }
+
 
 char* create_error_corrected_data(char* d,char* decoded){
   char c1,c2,c3;
@@ -102,17 +102,86 @@ char* create_error_corrected_data(char* d,char* decoded){
   decoded[6] = d[3];
   decoded[7] = '\0';
 
-  cout << "decoded " << decoded << endl;
   return decoded;
-
 }
 
-char parity(char first, char second, char third){
-  int total = first + second + third;
+char parity(char first, char second, char third, char fourth){
+  int total = first + second + third + fourth;
   if(total%2 == 0){
     return '0';
   }
   else{
     return '1';
   }
+}
+
+
+int decode(const char* received, char* decoded){
+  *decoded = '\0';
+
+  char p1,p2,p3;
+  char b[8];
+  int error_counter = 0;
+
+  char error_binary[4];
+
+  for(int i =0; i<8; i++){
+    b[i] = received[i];
+  }
+
+  cout << "b " << b << endl;
+
+  p1 = parity(b[5], b[6], b[7], b[8]);
+  p2 = parity(b[3], b[4], b[7], b[8]);
+  p3 = parity(b[2], b[4], b[6], b[8]);
+  cout << "p1 " << p1 << endl;
+  cout << "p2 " << p2 << endl;
+  cout << "p3 " << p3 << endl;
+
+  if(p1=='0' && p2== '0' && p3=='0'){
+    // no errors
+    for(int i = 0; i< 4; i++){
+      decoded[i] = b[i+2];
+    }
+    decoded[4] = '\0';
+    return 0;
+  }
+
+  if(p1=='1'||p2=='1'||p3=='1'){
+    // There is an error
+    // decimal value of p1p2p3 is the position of the error
+    error_binary[0] = p1;
+    error_binary[1] = p2;
+    error_binary[2] = p3;
+    error_binary[3] = '\0';
+
+
+    // Find the decimal value of the error
+    int sub, decimal=0;
+    int i = 2;
+    int x = 0;
+    for(i ; i >= 0; i--, x++ ){
+      if(error_binary[i] == '1'){
+        sub = pow(2.0, x);
+        decimal += sub;
+      }
+    }
+    cout << "decimal " << decimal << endl;
+
+    for(int i = 0; i< 4; i++){
+      decoded[i] = b[i+2];
+    }
+    decoded[4] = '\0';
+    if(decoded[decimal] == '1'){
+      decoded[decimal-1] = '0';
+    }
+    else{
+      decoded[decimal] = '1';
+    }
+
+    return 1;
+  }
+
+
+  return 1;
 }
