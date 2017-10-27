@@ -64,6 +64,10 @@ int main() {
   errors = decode(correct, decoded);
   cout << correct << " decoded is " << decoded << " (" << errors << " errors corrected)" << endl << endl;
 
+  strcpy(correct,"1101001");
+  errors = decode(correct, decoded);
+  cout << correct << " decoded is " << decoded << " (" << errors << " errors corrected)" << endl << endl;
+
   strcpy(correct,"100111011010010001110010101000011011001100");
   errors = decode(correct, decoded);
   cout << correct << " decoded is:" << endl << decoded << " (" << errors << " errors corrected)" << endl;
