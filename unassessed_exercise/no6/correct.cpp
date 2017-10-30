@@ -165,7 +165,7 @@ int decode(const char* received, char* decoded){
       }
     }
     // cout << "decimal " << decimal << endl;
-    //
+    
     // cout << "before " << b << endl;
 
     // Flip
