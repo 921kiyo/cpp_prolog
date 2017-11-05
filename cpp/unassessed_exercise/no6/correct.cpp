@@ -129,20 +129,17 @@ int decode(const char* received, char* decoded){
     b[i] = received[i];
   }
 
-  cout << "b " << b << endl;
+  p1 = parity(b[3], b[4], b[5], b[6]);
+  p2 = parity(b[1], b[2], b[5], b[6]);
+  p3 = parity(b[0], b[2], b[4], b[6]);
 
-  p1 = parity(b[5], b[6], b[7], b[8]);
-  p2 = parity(b[3], b[4], b[7], b[8]);
-  p3 = parity(b[2], b[4], b[6], b[8]);
-  cout << "p1 " << p1 << endl;
-  cout << "p2 " << p2 << endl;
-  cout << "p3 " << p3 << endl;
 
   if(p1=='0' && p2== '0' && p3=='0'){
     // no errors
-    for(int i = 0; i< 4; i++){
-      decoded[i] = b[i+2];
-    }
+    decoded[0] = b[2];
+    decoded[1] = b[4];
+    decoded[2] = b[5];
+    decoded[3] = b[6];
     decoded[4] = '\0';
     return 0;
   }
@@ -160,28 +157,32 @@ int decode(const char* received, char* decoded){
     int sub, decimal=0;
     int i = 2;
     int x = 0;
-    for(i ; i >= 0; i--, x++ ){
+    for(; i >= 0; i--, x++ ){
       if(error_binary[i] == '1'){
         sub = pow(2.0, x);
         decimal += sub;
+        error_counter++;
       }
     }
-    cout << "decimal " << decimal << endl;
+    // cout << "decimal " << decimal << endl;
+    
+    // cout << "before " << b << endl;
 
-    for(int i = 0; i< 4; i++){
-      decoded[i] = b[i+2];
-    }
-    decoded[4] = '\0';
-    if(decoded[decimal] == '1'){
-      decoded[decimal-1] = '0';
+    // Flip
+    if(b[decimal-1] == '0'){
+      // cout << ""
+      b[decimal-1] = '1';
     }
     else{
-      decoded[decimal] = '1';
+      b[decimal-1] = '0';
     }
 
-    return 1;
+    // The original data bit stream can be recovered as b3,b5,b6,b7
+    decoded[0] = b[2];
+    decoded[1] = b[4];
+    decoded[2] = b[5];
+    decoded[3] = b[6];
+    decoded[4] = '\0';
   }
-
-
-  return 1;
+  return error_counter;
 }

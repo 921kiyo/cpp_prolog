@@ -46,7 +46,7 @@ public:
 
 class Periodical : public Item {
 private:
-  static int loan_period; 
+  static int loan_period;
 public:
   Periodical(string t, int l) : Item(t,l) {
   }
@@ -59,7 +59,7 @@ public:
 };
 
 int Periodical::loan_period = 5;
-  
+
 int main() {
 
   Book cppwt("C++ Without Tears", 1, 10);
@@ -72,7 +72,8 @@ int main() {
 
   Periodical atwww80("Around...", 3);
   Periodical tmuqt("20m under the Queen's Tower", 4);
-  
+  cout << atwww80.get_loan_period() << endl;
+  cout << tmuqt.get_loan_period() << endl;
   LibraryUser ali("ali");
   LibraryUser georgia("georgia");
 
