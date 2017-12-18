@@ -1,0 +1,1 @@
+numval(Formula, Answer):-
