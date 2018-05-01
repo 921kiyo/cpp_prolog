@@ -22,7 +22,7 @@ class Player{
     has_ball = false;
 
     double prob = 0.5;
-    cout << "prob is " << prob << endl;
+
     if(is_inside_line(distance_total)){
       return prob*2;
     }
@@ -45,14 +45,14 @@ class Player{
   }
 };
 
-class Court{
- static int point_A, point_B;
-public:
-  Court(){
-    point_A = 0;
-    point_B = 0;
-  }
-};
+// class Court{
+//  static int point_A, point_B;
+// public:
+//   Court(){
+//     point_A = 0;
+//     point_B = 0;
+//   }
+// };
 
 int main(){
   Player* larry = new Player(4.5, 3.25, 0.9, false);
