@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-
+#include <math.h>
 using namespace std;
 
 const double center_x = 7.5;
@@ -18,12 +18,16 @@ class Player{
   double shoot_ball(){
     double distance_x = x - center_x;
     double distance_y = y - center_y;
-    double distance_total = distance_x + distance_y;
+    double x = distance_x + distance_y;
     has_ball = false;
 
-    double prob = 0.5;
+    double a = 0.62;
+    double b = 6.84;
+    double denominator = 1+exp(-a*(x-b*skill_factor));
+    double prob = 1 - 1/denominator;
 
-    if(is_inside_line(distance_total)){
+    if(is_inside_line(x)){
+      cout << "drand48() " << drand48() << endl;
       return prob*2;
     }
     else{
@@ -45,20 +49,12 @@ class Player{
   }
 };
 
-// class Court{
-//  static int point_A, point_B;
-// public:
-//   Court(){
-//     point_A = 0;
-//     point_B = 0;
-//   }
-// };
-
 int main(){
   Player* larry = new Player(4.5, 3.25, 0.9, false);
   Player* michael = new Player(10.5, 5.1, 0.95, true);
   larry->move(0.25,2.2);
   michael->pass_ball(larry);
   cout << "The number of points is " << larry->shoot_ball() << endl;
+  delete larry;
   return 0;
 }
