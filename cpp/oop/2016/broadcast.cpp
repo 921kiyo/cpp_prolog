@@ -23,8 +23,10 @@ public:
   }
   void boardcast(){
     if(is_emergency){
+      delta_lon = lon-lon2;;
+      double bracket = sqrt(sin(pow(2, )));
+      double distance = 2*3956* asin(bracket);
       // boardcase Mayday message
-
     }
 
   }
