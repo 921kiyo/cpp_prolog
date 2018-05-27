@@ -1,6 +1,0 @@
-#ifndef TUT3_H
-#define TUT3_H
-
-Node *create_new_node(const char)
-
-#endif
