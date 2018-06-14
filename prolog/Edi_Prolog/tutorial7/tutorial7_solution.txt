@@ -1,0 +1,68 @@
+LP tutorial week 9, solution notes
+==================================
+
+1. (i) MGU (prolog says) 
+X = g(W),
+U = h(Z)
+
+non MGU: eg X = g(a), W = a. U = h(Z).
+(check: ?- X = g(a), W = a, U = h(Z),  f(X, h(Z)) = f(g(W), U). )
+
+(ii)  MGU
+W = Z,
+X = g(Z)
+
+non MGU unifier:
+W = a, X = g(a), Z = a
+
+2. Unfold the definitions:
+
+(a) : if M1 |= p( c1,c1 ) then M2 |= p( c1, c2 )
+
+<=>   if (c1, c2 ) in I1(p) then  (c1,c2) in I2(p)  (by def of M |= p(c1,c2) )
+
+<=>   I1(p) is subset of I2(p)  (b)                  (by def of subset).
+
+3.  (a) predicates: bird/1 bee/1 parrot/1 skua/1 bumbleBee/1
+        constants:  polly, sam, best pete
+
+    (b) one model:  all predicates true for all constants
+        another model:
+
+     penguin(pete), bumbleBee(bert), skua(sam), parrot(polly),
+     bee(bert), bird(polly), bird(sam), flies(polly), flies(sam),
+     flies(pete), flies(bert), flies(polly), flies(sam)  all true,
+     all other pred(constant) statements false.
+
+(c)  Minimal model is the second above (can use fix-point caculation).
+(d)  It is indeeed smaller than the other model
+     ( if pred(constant) true in minimal model, it is also true in first model ).
+     
+
+4.  Mentioned parts in quote marks:
+    The artist formerly known as "the artist formerly known as prince"
+    is now known as "the artist".
+
+5.  The two queries are logically equivalent in the declarative reading:
+
+    some X (var(X) /\ X = 2 )
+    some X (X = 2 /\  var(X) )
+
+    logically equivalent statements must share the same truth value,
+    since Prolog gives different answers, the statements are not logically equivalent,
+    so the declarative reading is violated.  
+
+6.  The use of var/1 here involves the mention of its argument.
+
+    The program flattens arbitrarily nest list without instantiating
+    any variables in the first argument (nit so easy to see this):
+
+
+?- flatten( [1,[2,[3,X],4]], Z ).
+Z = [1,2,3,X,4]
+
+Without the first clause, get different behaviour:
+
+?- flatten( [1,[2,[3,X],4]], Z ).
+X = [],
+Z = [1,2,3,4] ? 

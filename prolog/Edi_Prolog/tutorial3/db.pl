@@ -1,0 +1,10 @@
+person(fred).
+person(peter).
+person(ann).
+person(beth).
+person(tom).
+person(talullah).
+age(peter,10).
+age(ann,5).
+age(beth,10).
+age(tom,8).

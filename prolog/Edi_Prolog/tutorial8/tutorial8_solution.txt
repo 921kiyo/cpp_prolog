@@ -1,0 +1,76 @@
+Tutorial week 9, solution notes
+
+1.  logical consequence is monotonic:
+
+(watch out: |= is used in two senses, for structure |= Formula,
+and for axioms |= formula)
+
+Suppose T |= Q, and X additional axioms.
+
+Show   T U X |= Q.
+
+By def of logical consequence,  want
+   all M.  if M |= T U X then M |= Q.
+
+Suppose    M |= T U X;  then M |= T,
+now since T |= Q, we have M |= Q.
+
+2.  CWA here lets as add both "not happy(john)" and "not happy(jane)";
+this makes the combined theory inconsistent (impossible that the axioms
+can all be true).  Note that CWA for definite clauses avoids
+this, the extended theory is always consistent.
+
+3.  Completion:
+
+all x. q(x) <-> x = a.
+all y. p(y) <-> some x. y = a & not (q(x))
+
+4.
+
+run the program:
+?- \+ p(a).
+        1      1 Call: p(a) ? 
+        2      2 Call: q(_1152) ? 
+        2      2 Exit: q(a) ? 
+        1      1 Fail: p(a) ? 
+yes
+
+\+ p(a) succeeds,
+because p(a) fails (NAF invoked here)
+p(a) fails because \+ q(_1152) fails;
+\+ q(_1152) fails because q(_1152) succeeds.
+
+not p(a) is not consequence of the completion
+(question does not ask to show this, but
+take model eg with domain {a,b} and q(a), not q(b),
+p(a),p(b), and check against completion axioms.
+
+Since Prolog use of NAF here returns yes to a query that
+is not logical consequence of the completion, it is unsound.
+
+5.  To solve query  X => Y, add X to the current program clause
+    and solve for Y.
+
+For given example:
+
+  add:  a => b => c
+  add   a => b
+  add   a
+
+Prolog clause versions:
+
+c :- a, b.
+b :- a.
+a.
+
+and now query of c succeeds.
+
+(NB  uses equivalence of (a => b => b) and ( a & b => c)  ).
+
+6.  for universal, use new constant:
+
+   natural(c) => natural(s(s(c))).
+
+Add  natural(c) to program.
+
+Now use standard Prolog from this point.

@@ -1,0 +1,2 @@
+numval(X, Answer):-
+  

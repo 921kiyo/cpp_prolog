@@ -21,16 +21,19 @@ const char* error_description(int code);
 /* presupplied helper function for converting string to Direction enum */
 Direction string_to_direction(const char* token);
 
-bool get_symbol_position(char** map, int height, int width, char letter, int& r, int& c);
+
+bool get_symbol_position(char** map, int height, int width, char target, int& r, int& c);
 
 char get_symbol_for_station_or_line(const char* name);
-char get_symbol(const char* name, const char* filename);
+
+bool get_symbol(const char* filename, const char* name, char& sym);
 
 int validate_route(char** map, int height, int width, const char* start_station, char* route, char* destination);
-bool is_off_bound(int height, int width, int current_row, int current_column);
-bool is_off_track(char** map, int row, int column);
-void get_name(char symbol, char* name);
-bool is_route_valid(char* route);
-bool is_station(char symbol);
 
-void move_forward(char** map, int height, int width, Direction direction, int& current_row, int& current_column);
+bool is_route_valid(char* route);
+
+bool is_out_bound(int height, int width, int row_now, int column_now);
+bool is_off_track(char** map, int row, int column);
+
+void move(char** map, int& row, int& column, char* direction);
+bool is_backtrack(char* previous_direction, char* direction);

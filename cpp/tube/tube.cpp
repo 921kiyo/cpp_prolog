@@ -132,12 +132,12 @@ Direction string_to_direction(const char* token) {
 	return INVALID_DIRECTION;
 }
 
-bool get_symbol_position(char** map, int height, int width, char letter, int& r, int& c){
-	for(int h = 0; h < height; h++){
-		for(int w = 0; w < width; w++){
-			if(letter == map[h][w]){
-				r = h;
-				c = w;
+bool get_symbol_position(char** map, int height, int width, char target, int& r, int& c){
+	for(int row = 0; row < height; row++){
+		for(int col = 0; col < width; col++){
+			if(map[row][col] == target){
+				r = row;
+				c = col;
 				return true;
 			}
 		}
@@ -148,169 +148,229 @@ bool get_symbol_position(char** map, int height, int width, char letter, int& r,
 }
 
 char get_symbol_for_station_or_line(const char* name){
-	char letter = ' ';
-	letter = get_symbol(name, "stations.txt");
-	if(letter == ' '){
-		letter = get_symbol(name, "lines.txt");
+	char symbol;
+	if(!get_symbol("stations.txt", name, symbol)){
+		get_symbol("lines.txt", name, symbol);
 	}
-	return letter;
+	return symbol;
 }
 
-char get_symbol(const char* name, const char* filename){
+bool get_symbol(const char* filename, const char* name, char& sym){
 	ifstream in_stream;
 	in_stream.open(filename);
+	char temp[80];
+	if(in_stream.fail()){
+		cout << "filename is not valid" << endl;
+		in_stream.close();
+		return false;
+	}
 
-	const int MAX_LINE = 40;
-	char line[MAX_LINE];
-	char n[MAX_LINE];
+	char line[80];
+	// in_stream.get(symbol);
 	while(!in_stream.eof()){
-		in_stream.getline(line, MAX_LINE);
-		int counter = 0;
-		for(int i = 2; line[i] != '\0'; i++){
-			n[counter] = line[i];
+		in_stream.getline(line, 80);
+		int counter = 2;
+		int c = 0;
+		while(line[counter] != '\0'){
+			temp[c] = line[counter];
+			c++;
 			counter++;
 		}
-		n[counter] = '\0';
-
-		if(!strcmp(n, name)){
-			in_stream.close();
-			return line[0];
+		temp[c] = '\0';
+		if(strcmp(temp,name) == 0){
+			sym = line[0];
+			return true;
 		}
 	}
 
 	in_stream.close();
-	return ' ';
-}
-
-void move_forward(char** map, int height, int width, Direction direction, int& current_row, int& current_column){
-	switch(direction){
-		case(N): current_row--; break;
-		case(S): current_row++; break;
-		case(W): current_column--; break;
-		case(E): current_column++; break;
-
-		case(NE): current_row--; current_column++; break;
-		case(NW): current_row--; current_column--; break;
-		case(SE): current_row++; current_column++; break;
-		case(SW): current_row++; current_column--; break;
-		default: break;
-	}
+	return false;
 }
 
 int validate_route(char** map, int height, int width, const char* start_station, char* route, char* destination){
-	int train_change = 0;
-	char symbol = ' ';
-	symbol = get_symbol(start_station, "stations.txt");
-	if(symbol == ' '){
+	int changes = 0;
+	char symbol;
+	if(!get_symbol("stations.txt", start_station, symbol)){
 		return ERROR_START_STATION_INVALID;
 	}
-	if(!is_route_valid(route)){
-		return ERROR_INVALID_DIRECTION;
-	}
+	char path[100];
+	strcpy(path, "");
+	int path_counter = 0;
 
-	char start_symbol = get_symbol_for_station_or_line(start_station);
-	int current_row, current_column, previous_row, previous_column;
-	get_symbol_position(map, height, width, start_symbol, current_row, current_column);
+	int row_now, column_now;
+	int row_previous, column_previous;
+	char previous_direction[3];
+	get_symbol_position(map, height, width, symbol, row_now, column_now);
 
-	char str[80];
-	strcpy(str, route);
-	for(char* p = strtok(str, ","); p != NULL; p=strtok(NULL, ",")){
+	for(char* p=strtok(route, ","); p!=NULL; p=strtok(NULL, ",")){
+		if(!is_route_valid(p)){
+			return ERROR_INVALID_DIRECTION;
+		}
 
-		previous_row = current_row;
-		previous_column = current_column;
+		row_previous = row_now;
+		column_previous = column_now;
 
-		Direction direction = string_to_direction(p);
-		move_forward(map, height, width, direction, current_row, current_column);
+		move(map, row_now, column_now,p);
 
-		if(is_off_bound(height, width, current_row, current_column)){
+		if(is_out_bound(height, width, row_now, column_now)){
 			return ERROR_OUT_OF_BOUNDS;
 		}
-		if(is_off_track(map, current_row, current_column)){
+
+		if(is_off_track(map, row_now, column_now)){
 			return ERROR_OFF_TRACK;
 		}
 
-    // If the symbol is different, check if the previous symbol is a station
-		if(map[previous_row][previous_column] != map[current_row][current_column]){
-			if(!is_station(map[previous_row][previous_column])){
+    // checking if the train change only happens at a station
+		if(path_counter >= 2 && map[row_now][column_now] != path[path_counter-2]){
+			if(!isalnum(map[row_now][column_now]) && !isalnum(path[path_counter-2]) && !isalnum(map[row_previous][column_previous])){
 				return ERROR_LINE_HOPPING_BETWEEN_STATIONS;
 			}
 		}
+
+    // Check backtracking
+		if(is_backtrack(previous_direction, p)){
+			if(!isalnum(map[row_previous][column_previous])){
+				return ERROR_BACKTRACKING_BETWEEN_STATIONS;
+			}
+		}
+
+		// cout << "row now " << row_now << endl;
+		// cout << "column now " << column_now << endl;
+		// cout << map[row_now][column_now] << endl;
+
+    // Check the change
+		if(isalnum(map[row_previous][column_previous])){
+			if(path_counter >= 2 && map[row_now][column_now] != path[path_counter-2]){
+				changes++;
+			}
+		}
+
+		path[path_counter] = map[row_now][column_now];
+		path[path_counter+1] = '\0';
+		cout << "counter " << path_counter << endl;
+		path_counter++;
+
+		strcpy(previous_direction, p);
+
 	}
 
-  // Check is the destination is a station
-	destination[0] = '\0';
-	char dest_symbol = map[current_row][current_column];
-	get_name(dest_symbol, destination);
-	if(destination[0] == '\0'){
+  // Check if the end point is a station
+	if(!isalnum(map[row_now][column_now])){
 		return ERROR_ROUTE_ENDPOINT_IS_NOT_STATION;
 	}
-	return train_change;
+
+	return changes;
 }
 
-void get_name(char symbol, char* name){
-	ifstream in_stream;
-	in_stream.open("stations.txt");
-	const int MAX_LINE = 40;
-	char line[MAX_LINE];
-	int counter = 0;
-	while(!in_stream.eof()){
-		in_stream.getline(line, MAX_LINE);
-		if(symbol == line[0]){
-			for(int i = 2; line[i] != '\0'; i++){
-				name[counter] = line[i];
-				counter++;
-			}
-			name[counter] = '\0';
-			in_stream.close();
-			return;
-		}
+bool is_backtrack(char* previous_direction, char* direction){
+	if(strcmp(previous_direction,"N")==0 && strcmp(direction,"S") == 0){
+		return true;
 	}
-	in_stream.close();
+	if(strcmp(previous_direction,"S")==0 && strcmp(direction,"N") == 0){
+		return true;
+	}
+	if(strcmp(previous_direction,"W")==0 && strcmp(direction,"E") == 0){
+		return true;
+	}
+	if(strcmp(previous_direction,"E")==0 && strcmp(direction,"W") == 0){
+		return true;
+	}
+	if(strcmp(previous_direction,"NE")==0 && strcmp(direction,"SW") == 0){
+		return true;
+	}
+	if(strcmp(previous_direction,"SW")==0 && strcmp(direction,"NE") == 0){
+		return true;
+	}
+	if(strcmp(previous_direction,"SE")==0 && strcmp(direction,"NW") == 0){
+		return true;
+	}
+	if(strcmp(previous_direction,"NW")==0 && strcmp(direction,"SE") == 0){
+		return true;
+	}
+
+	return false;
 }
 
-bool is_off_track(char** map, int row, int column){
-	char symbol = map[row][column];
-	if(symbol == ' '){
+void move(char** map, int& row, int& column, char* direction){
+	if(strcmp(direction, "N") == 0){
+		row--;
+		return;
+	}
+	if(strcmp(direction, "S") == 0){
+		row++;
+		return;
+	}
+	if(strcmp(direction, "E") == 0){
+		column++;
+		return;
+	}
+	if(strcmp(direction, "W") == 0){
+		column--;
+		return;
+	}
+	if(strcmp(direction, "NE") == 0){
+		row--;
+		column++;
+		return;
+	}
+	if(strcmp(direction, "NW") == 0){
+		row--;
+		column--;
+		return;
+	}
+	if(strcmp(direction, "SE") == 0){
+		row++;
+		column++;
+		return;
+	}
+	if(strcmp(direction, "SW") == 0){
+		row++;
+		column--;
+		return;
+	}
+}
+
+bool is_out_bound(int height, int width, int row_now, int column_now){
+	if(row_now < 0 || row_now > height){
+		return true;
+	}
+	if(column_now < 0 || column_now > width){
 		return true;
 	}
 	return false;
 }
 
-bool is_off_bound(int height, int width, int current_row, int current_column){
-	if(current_row > height || current_row < 0 || current_column > width || current_column < 0){
+bool is_off_track(char** map, int row, int column){
+	if(map[row][column] == ' '){
 		return true;
 	}
 	return false;
 }
 
 bool is_route_valid(char* route){
-	for(char* p = strtok(route, ","); p != NULL; p=strtok(NULL, ",")){
-		if(!strcmp(p, "N") || \
-			 !strcmp(p, "S") || \
-			 !strcmp(p, "E") || \
-			 !strcmp(p, "W") || \
-			 !strcmp(p, "NE") || \
-			 !strcmp(p, "NW") || \
-			 !strcmp(p, "SE") || \
-			 !strcmp(p, "SW")){
-			continue;
-		}else{
-			return false;
-		}
+	if(strcmp(route,"N") == 0){
+		return true;
 	}
-	return true;
-}
-
-bool is_station(char symbol){
-	ifstream in_stream;
-	in_stream.open("stations.txt");
-	const int MAX_LINE = 40;
-	char line[MAX_LINE];
-	while(!in_stream.eof()){
-		in_stream.getline(line, MAX_LINE);
-		if(symbol == line[0]){
-			return true;
-		}
+	if(strcmp(route,"S") == 0){
+		return true;
+	}
+	if(strcmp(route,"W") == 0){
+		return true;
+	}
+	if(strcmp(route,"E") == 0){
+		return true;
+	}
+	if(strcmp(route,"NE") == 0){
+		return true;
+	}
+	if(strcmp(route,"NW") == 0){
+		return true;
+	}
+	if(strcmp(route,"SE") == 0){
+		return true;
+	}
+	if(strcmp(route,"SW") == 0){
+		return true;
 	}
 	return false;
 }

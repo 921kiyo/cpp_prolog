@@ -1,0 +1,1 @@
+sum(First, Second, Third) :- Third is First + Second.

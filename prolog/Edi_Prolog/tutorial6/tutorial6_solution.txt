@@ -1,0 +1,42 @@
+1.  
+
+(a)
+waiting -> godot.
+tick /\ waiting -> waiting.
+tick.
+
+(b)      godot   1
+           |
+         waiting 2
+           |
+       tick, waiting 3
+           |
+         waiting 4
+           |           looping here.
+
+(c) Prolog loops and does not return.
+
+(d) decision procedure would return false (godot is not provable).
+
+2.
+(a)
+
+even(z).
+all x. even(x) -> odd(s(x)).
+all x. odd(x) -> even(s(x)).
+
+(b)
+exists x.  odd(x) /\ even(x).
+
+(c):  first and 3rd are models;  second is not: (s(s(z)) is even,
+      s(s(s(z))) is not odd.
+
+ (d):  not logical consequence since there is a model (M1) where
+       it is false.
+
+(e)   ~ exists x. odd(x) /\ even(x) not logical consequence, since
+      it is false in M3 above.
+
+(f)   exists x.odd(x) is logical consequence:
+      Prolog shows odd(s(z)), Prolog proof is sound, ie proved statements
+      are true in all models
